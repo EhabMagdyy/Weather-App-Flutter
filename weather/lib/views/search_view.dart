@@ -9,6 +9,7 @@ class SearchView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final TextEditingController controller = TextEditingController();
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -24,6 +25,7 @@ class SearchView extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         child: Center(
           child: TextField(
+            controller: controller,
             // 6. Trigger Cubit
             onSubmitted: (value) {
               log(value);
@@ -44,7 +46,10 @@ class SearchView extends StatelessWidget {
               suffixIcon: IconButton(
                 icon: const Icon(Icons.search),
                 onPressed: (){
-                  
+                  final value = controller.text;
+                  log(value);
+                  BlocProvider.of<GetWeatherCubit>(context).getWeather(cityName: value);
+                  Navigator.of(context).pop();
                 },
               ),
               border: OutlineInputBorder(

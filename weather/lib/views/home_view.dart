@@ -42,7 +42,16 @@ class HomeView extends StatelessWidget {
             return WeatherInfoBody();
           }
           else if(state is WeatherFailureState) {
-            return const Text("There was an error!");
+            return const Center(
+              child: Text(
+                "No weather data found!\nPlease search for a city.",
+                style: TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.redAccent,
+                )
+                ),
+            );
           }
           else{
             return const NoWeatherBody();
