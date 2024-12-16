@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weather/cubits/get_weather_cubit/get_weather_cubit.dart';
@@ -27,10 +26,13 @@ class SearchView extends StatelessWidget {
           child: TextField(
             controller: controller,
             // 6. Trigger Cubit
-            onSubmitted: (value) {
+            onSubmitted: (value) async {
               log(value);
               BlocProvider.of<GetWeatherCubit>(context).getWeather(cityName: value);
-              Navigator.of(context).pop();
+              await Future.delayed(const Duration(milliseconds: 500));    // wait for 500ms before transition to give time for the API call to complete
+              if (context.mounted) {
+                Navigator.of(context).pop();
+              }
             },
             decoration: InputDecoration(
               contentPadding: const EdgeInsets.symmetric(
@@ -45,11 +47,14 @@ class SearchView extends StatelessWidget {
               ),
               suffixIcon: IconButton(
                 icon: const Icon(Icons.search),
-                onPressed: (){
+                onPressed: () async{
                   final value = controller.text;
                   log(value);
                   BlocProvider.of<GetWeatherCubit>(context).getWeather(cityName: value);
-                  Navigator.of(context).pop();
+                  await Future.delayed(const Duration(milliseconds: 1200));    // wait for 1200ms before transition to give time for the API call to complete
+                  if (context.mounted) {
+                    Navigator.of(context).pop();
+                  }
                 },
               ),
               border: OutlineInputBorder(
